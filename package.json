@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/joi": "^17.2.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "joi": "^17.5.0"
+  }
+}
