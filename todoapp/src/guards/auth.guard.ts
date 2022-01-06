@@ -12,5 +12,5 @@ export class AuthGuard implements CanActivate {
 }
 
 function validateRequest(request: any): boolean | Promise<boolean> | Observable<boolean> {
-    return false;
+    return true;
 }

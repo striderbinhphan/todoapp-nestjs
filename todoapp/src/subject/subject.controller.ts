@@ -1,16 +1,19 @@
-import { Body, Controller, Delete, ForbiddenException, Get, NotFoundException, Param, ParseIntPipe, Post, UseFilters, UsePipes } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, NotFoundException, Param, ParseIntPipe, Post, UseFilters, UseInterceptors, UsePipes } from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import {SubjectDTO} from './subject.dto'
 import { ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/filters/http-exception.filter';
 import { JoiValidationPipe } from 'src/pipes.ts/joinvalidation.pipe';
 import * as Joi from 'joi'
+import { LoggingInterceptor } from 'src/interceptors/logging.interceptor';
+import { TransformInterceptor } from 'src/interceptors/transform.interceptor';
 export const captainSchema = Joi.object({
     name: Joi.string().max(20).required(),
   }).options({ abortEarly: false, allowUnknown: true });
   
 @ApiTags('subject')
 @Controller('/subject')
+@UseInterceptors(TransformInterceptor)
 export class SubjectController {
     constructor(private readonly subjectService:SubjectService){}
     @Get('')
