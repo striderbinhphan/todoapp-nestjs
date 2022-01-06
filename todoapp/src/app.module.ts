@@ -15,6 +15,8 @@ import { SubjectController } from './subject/subject.controller';
 import { SubjectModule } from './subject/subject.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { CategoryModule } from './category/category.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guards/role.guard';
 @Module({
   imports: [
     // ConfigModule.forRoot({
@@ -35,10 +37,14 @@ import { CategoryModule } from './category/category.module';
     }),
     UserModule,
     SubjectModule,
-    CategoryModule
+    CategoryModule,
+    
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,{
+    provide: APP_GUARD,
+    useClass: RolesGuard,
+  },],
 })
 export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {

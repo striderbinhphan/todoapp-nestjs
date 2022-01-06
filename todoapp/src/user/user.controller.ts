@@ -1,15 +1,18 @@
-import { Body, Controller, ForbiddenException, Get, HttpException, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, HttpException, HttpStatus, Post, SetMetadata, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiTags } from '@nestjs/swagger';
 import { UserEntity } from 'src/entities/user.entity';
 import { ClassValidationPipe } from 'src/pipes.ts/classvalidation.pipe';
 import { createUserDto } from './create-user.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/guards/role.decorator';
 @ApiTags('user')
 @Controller('/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('')
+  @UseGuards(AuthGuard)
   async getHello() {
     // throw new HttpException({
     //   status: HttpStatus.FORBIDDEN,
@@ -19,7 +22,8 @@ export class UserController {
     // throw new ForbiddenException();
   }
   
-  @Post()
+  @Post('')
+  @Roles('admin')
   async create(
     @Body(new ClassValidationPipe()) createUserDto: createUserDto,
   ) {
