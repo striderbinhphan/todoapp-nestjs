@@ -17,6 +17,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { CategoryModule } from './category/category.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guards/role.guard';
+import { CourseModule } from './course/course.module';
 @Module({
   imports: [
     // ConfigModule.forRoot({
@@ -38,6 +39,7 @@ import { RolesGuard } from './guards/role.guard';
     UserModule,
     SubjectModule,
     CategoryModule,
+    CourseModule,
     
   ],
   controllers: [AppController],
