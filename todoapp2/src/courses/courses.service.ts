@@ -7,6 +7,7 @@ import { Course } from './entities/course.entity';
 import { CourseRepository } from './respositories/course.repository';
 import { COURSE_STATUS } from './entities/course.entity';
 import { FilterCourseDto } from './dto/filter-course.dto';
+import { UserEntity } from '../auth/entities/user.entity';
 @Injectable()
 export class CoursesService {
   constructor(
@@ -15,9 +16,9 @@ export class CoursesService {
   ){
 
   }
-  async create(createCourseDto: CreateCourseDto):Promise<any> {
+  async create(createCourseDto: CreateCourseDto, user: UserEntity):Promise<any> {
     
-    return this.courseRepository.createCourse(createCourseDto);
+    return this.courseRepository.createCourse(createCourseDto,user);
   }
 
   findAll() {

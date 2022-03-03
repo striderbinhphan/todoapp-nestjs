@@ -1,5 +1,6 @@
 import { Exclude } from "class-transformer";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Course } from "../../courses/entities/course.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('user')
 export class UserEntity{
@@ -10,7 +11,10 @@ export class UserEntity{
     @Column()
     @Exclude()
     password: string;
-  
+
+    @OneToMany(_type=>Course, (course)=> course.user, {eager: false})
+    courses: Course[]
+    
     constructor(partial: Partial<UserEntity>) {
       Object.assign(this, partial);
     }

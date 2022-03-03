@@ -1,15 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm"
+import { Exclude } from "class-transformer"
+import { UserEntity } from "../../auth/entities/user.entity"
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity()
 export class Course  {
     @PrimaryGeneratedColumn('uuid')
     courseId: string
-    @Column()
+    @Column({unique: true})
     courseName: string
     @Column()
     courseStatus: COURSE_STATUS
-    @Column()
-    userId: string
+
+    @ManyToOne(type=>UserEntity, (user)=>user.courses, {eager: true})
+    @Exclude({toPlainOnly: true})
+    user: UserEntity
 }
 
 export enum COURSE_STATUS{

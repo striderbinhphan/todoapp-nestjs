@@ -4,11 +4,13 @@ import { AuthCredentialsDTO } from './dto/auth.dto';
 import { UserRepository } from './repositories/user.repository';
 import * as bcrypt from 'bcrypt'
 import { UserEntity } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
     constructor(
         @InjectRepository(UserRepository)
-        private userRepository: UserRepository
+        private userRepository: UserRepository,
+        private jwtService: JwtService
     ){}
     async register(authCredentialsDto:AuthCredentialsDTO): Promise<UserEntity>{
         let {username,password} = authCredentialsDto;
@@ -30,15 +32,16 @@ export class AuthService {
             }
         }
     }
-    async login(authCredentialsDto:AuthCredentialsDTO):Promise<any>{
-        let {username,password} = authCredentialsDto;
-        let user = await this.userRepository.findOne({username:username});
+    async login(authCredentialsDto:AuthCredentialsDTO):Promise<{accessToken: string, refrestToken: string}>{
+        const {username,password} = authCredentialsDto;
+        const user = await this.userRepository.findOne({username:username});
         if(!user){
             throw new NotFoundException("This account does not exist. Please register!");
         }
         if(!bcrypt.compare(password,user.password)){
             throw new NotFoundException("Wrong password. Try again");
         }
-        return "success";
+        const accessToken = await this.jwtService.sign({username});
+        return {accessToken, refrestToken: null};
     }
 }
