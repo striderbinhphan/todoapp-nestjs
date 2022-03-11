@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { GetUser } from './decorators/get-user.decorator';
@@ -21,8 +21,9 @@ export class AuthController {
     }
     
     @Get('/test')
-    @UseGuards(AuthGuard())
-    test(@GetUser() user: UserEntity){
+    // @UseGuards(AuthGuard())
+    test(@Request() req){
+        console.log(req.headers)
         return "eane";
     }
 }
