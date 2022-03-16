@@ -1,0 +1,25 @@
+version: '3.9'
+services: 
+  mongo_practice1:
+    image: mongo
+    ports:
+      - 27018:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    restart: always
+    volumes:
+      - todoapp2:/home/node/app
+  mongo_express_practice1:
+    image: mongo-express
+    ports: 
+      - 8080:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_SERVER=mongo_practice1
+    depends_on:
+      - 'mongo_practice1'
+    restart: always
+volumes:
+  todoapp2:
